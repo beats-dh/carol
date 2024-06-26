@@ -1,0 +1,7 @@
+body,
+html {
+  height: 100%;
+  margin: 0;
+  font-family: 'Arial', sans-serif; /* Garante que a fonte seja Arial ou uma fonte sans-serif */
+  overflow-x: hidden; /* Previne rolagem horizontal */
+}

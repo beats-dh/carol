@@ -1,0 +1,158 @@
+.background {
+    position: fixed;
+    /* Fixa a imagem de fundo */
+    top: 0;
+    left: 0;
+    min-height: 100vh;
+    /* Altura mínima de 100% da tela visível */
+    width: 100vw;
+    /* Largura de 100% da tela visível */
+    background-image: url('4.webp');
+    /* Substitua com o caminho correto da sua imagem */
+    background-size: cover;
+    /* Garante que a imagem cubra toda a tela */
+    background-position: center;
+    /* Centraliza a imagem */
+    background-repeat: no-repeat;
+    /* Impede que a imagem se repita */
+    z-index: -1;
+    /* Mantém a imagem atrás do conteúdo */
+}
+
+.page-container {
+    position: relative;
+    width: 100%;
+    padding-top: 100px;
+    /* Ajusta o padding superior para evitar sobreposição com o nome */
+}
+
+.reactions {
+    margin-top: 10px;
+}
+
+.copy-button {
+    background-color: #008cba;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  .notification {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  }
+
+  .error-message {
+    color: #f44336;
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
+
+.like-button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.nome-centralizado {
+    width: 100%;
+    /* Largura completa da tela */
+    text-align: center;
+    /* Centraliza o texto horizontalmente */
+    padding: 2px 0;
+    /* Espaço acima e abaixo do nome */
+    font-size: 40px;
+    /* Tamanho do texto */
+    color: #b3001cad;
+    /* Cor do texto */
+    position: absolute;
+    top: 0;
+    /* Posiciona no topo da página */
+    left: 0;
+    /* Alinha à esquerda da página */
+    right: 0;
+    /* Alinha à direita da página */
+    z-index: 10;
+    /* Garante que fique sobre outros elementos */
+}
+
+#containerTextos {
+    position: relative;
+    /* Posicionamento relativo para o conteúdo textual */
+    width: 100%;
+    /* Largura total da tela */
+    padding: 60px 20px;
+    /* Espaçamento interno para o conteúdo */
+    box-sizing: border-box;
+}
+
+.capitulo {
+    background-color: rgba(255, 255, 255, 0.7);
+    /* Fundo semi-transparente para melhor leitura */
+    margin: 20px auto;
+    /* Centraliza horizontalmente */
+    padding: 20px;
+    width: 55%;
+    /* Largura das divs dos capítulos */
+    max-width: 600px;
+    /* Limita a largura máxima */
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Sombra sutil */
+    text-align: center;
+    /* Texto centralizado */
+    box-sizing: border-box;
+}
+
+h2 {
+    color: #b30059;
+    /* Cor do título em tons rosados */
+    margin-bottom: 15px;
+    /* Espaço abaixo do título */
+}
+
+p {
+    line-height: 1.6;
+    /* Espaçamento entre linhas para melhor legibilidade */
+}
+
+@media (max-width: 768px) {
+    .nome-centralizado {
+        padding: 3px 0;
+        font-size: 30px;
+    }
+    .capitulo {
+        width: 95%;
+        /* Ajuste para melhor utilização do espaço em tablets */
+    }
+}
+
+@media (max-width: 414px) {
+    .nome-centralizado {
+        padding: 3px 0;
+        font-size: 30px;
+    }
+    
+    .capitulo {
+        width: 98%;
+        /* Ajuste para melhor utilização do espaço em smartphones */
+    }
+}
