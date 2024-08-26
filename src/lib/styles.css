@@ -7,7 +7,6 @@
     /* Altura mínima de 100% da tela visível */
     width: 100vw;
     /* Largura de 100% da tela visível */
-    /* Substitua com o caminho correto da sua imagem */
     background-size: cover;
     /* Garante que a imagem cubra toda a tela */
     background-position: center;
@@ -22,25 +21,56 @@
     position: relative;
     width: 100%;
     padding-top: 100px;
-    overflow-y: auto; /* Permite a rolagem vertical */
-    max-height: 100vh; /* Garante que o contêiner não ultrapasse a altura da janela */
+    overflow-y: auto;
+    /* Permite a rolagem vertical */
+    max-height: 100vh;
+    /* Garante que o contêiner não ultrapasse a altura da janela */
 }
 
 .reactions {
-    margin-top: 10px;
+    margin-top: auto;
+    padding-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
 
-.copy-button {
+.copy-button,
+.like-button {
     background-color: #008cba;
+    /* Cor de fundo do botão Copiar */
     color: white;
     border: none;
     padding: 5px 10px;
     font-size: 14px;
     cursor: pointer;
     border-radius: 5px;
-  }
+    position: relative;
+}
 
-  .notification {
+.like-button {
+    background-color: #4caf50;
+    /* Cor de fundo do botão Curtir */
+}
+
+/* Estilo moderno para o contador */
+.likes-count {
+    background-color: rgba(214, 112, 17, 0.8);
+    color: white;
+    border-radius: 50%;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
+
+    top: -10px;
+    right: -10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.notification {
     position: fixed;
     bottom: 20px;
     left: 50%;
@@ -51,35 +81,23 @@
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     animation: fadein 0.5s, fadeout 0.5s 2.5s;
-  }
+}
 
-  .error-message {
+.error-message {
     color: #f44336;
     font-size: 14px;
     margin-bottom: 15px;
-  }
-
-.like-button {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 5px;
 }
 
 .nome-centralizado {
     width: 100%;
     text-align: center;
     padding: 2px 0;
-    font-size: 60px; /*40*/
+    font-size: 60px;
     color: hsl(0, 0%, 100%);
     position: absolute;
-    top: 10%; /* Alinha o texto a 10% do topo da tela */
+    top: 2%;
+    /* Ajuste para mover o texto mais próximo do topo */
     left: 0;
     right: 0;
     z-index: 10;
@@ -87,32 +105,53 @@
 
 
 #containerTextos {
+    display: none;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
     position: relative;
-    /* Posicionamento relativo para o conteúdo textual */
     width: 100%;
-    /* Largura total da tela */
-    padding: 60px 20px;
-    /* Espaçamento interno para o conteúdo */
+    padding: 50px 20px;
     box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    /* Cria colunas flexíveis, cada uma com no mínimo 300px e ocupando o espaço disponível */
+    gap: 20px;
+    /* Espaçamento entre os cards */
 }
 
 .capitulo {
-    background-color: rgba(255, 255, 255, 0.0);
-    /* Fundo semi-transparente para melhor leitura */
-    margin: 20px auto;
-    /* Centraliza horizontalmente */
+    background-color: rgba(255, 255, 255, 0.1);
+    margin: 0 auto;
     padding: 20px;
     width: 100%;
-    /* Largura das divs dos capítulos */
-    max-width: 600px;
-    /* Limita a largura máxima */
+    max-width: none;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    /* Sombra sutil */
     text-align: center;
-    /* Texto centralizado */
-    box-sizing: border-box;
     color: rgb(255, 255, 255);
+    max-height: 600px;
+    /* Limita a altura máxima do card */
+    overflow-y: auto;
+    /* Adiciona rolagem vertical se o conteúdo exceder a altura */
+    opacity: 0;
+    /* Inicialmente invisível */
+    transform: translateY(-20px);
+    /* Levemente movido para baixo */
+    animation: fadeInUp 2s ease-out forwards;
+    display: flex;
+    flex-direction: column;
+    /* Alinha os elementos verticalmente */
+    justify-content: space-between;
+    /* Garante que os botões fiquem no final */
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        /* Fica visível */
+        transform: translateY(0);
+        /* Volta para a posição original */
+    }
 }
 
 h2 {
@@ -127,14 +166,75 @@ p {
     /* Espaçamento entre linhas para melhor legibilidade */
 }
 
+/* Estiliza a barra de rolagem para navegadores baseados em WebKit (Chrome, Safari) */
+.capitulo::-webkit-scrollbar {
+    width: 8px;
+    /* Largura da barra de rolagem */
+}
+
+.capitulo::-webkit-scrollbar-track {
+    background: transparent;
+    /* Cor do fundo da barra */
+    border-radius: 10px;
+}
+
+.capitulo::-webkit-scrollbar-thumb {
+    background-color: rgba(214, 112, 17, 0.8);
+    /* Cor da barra de rolagem */
+    border-radius: 10px;
+    border: 2px solid transparent;
+    /* Espessura da borda */
+    background-clip: content-box;
+    /* Clipping da cor do fundo */
+}
+
+.capitulo::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(214, 112, 17, 1);
+    /* Cor ao passar o mouse */
+}
+
+/* Estiliza a barra de rolagem para navegadores Firefox */
+.capitulo {
+    scrollbar-width: thin;
+    /* Define a largura da barra como fina */
+    scrollbar-color: rgba(214, 112, 17, 0.8) rgba(255, 255, 255, 0.1);
+    /* Cor da barra de rolagem e do fundo */
+}
+
+/* Opcional: Estilizar para todo o site, não apenas nos cards */
+body::-webkit-scrollbar {
+    width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: rgba(214, 112, 17, 0.8);
+    border-radius: 10px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(214, 112, 17, 1);
+}
+
 @media (max-width: 768px) {
     .nome-centralizado {
         padding: 3px 0;
         font-size: 30px;
     }
+
     .capitulo {
         width: 95%;
         /* Ajuste para melhor utilização do espaço em tablets */
+    }
+}
+
+@media (max-width: 768px) {
+    #containerTextos {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        /* Ajusta as colunas para telas menores */
     }
 }
 
@@ -143,7 +243,7 @@ p {
         padding: 3px 0;
         font-size: 30px;
     }
-    
+
     .capitulo {
         width: 98%;
         /* Ajuste para melhor utilização do espaço em smartphones */
