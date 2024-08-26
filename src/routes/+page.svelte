@@ -6,69 +6,25 @@
 	import { v4 as uuidv4 } from 'uuid';
 	import { db, ref, onValue, runTransaction, set } from '../lib/firebaseConfig';
 
-	/**
-	 * @type {any[]}
-	 */
-	let capitulos = [];
+	let capitulos = []; // Lista para armazenar os capítulos
 	let userIp = '';
 	let userId = '';
 	let showNotification = false;
 	let notificationMessage = '';
 	let tulipsLoaded = false; // Variável para controlar se as tulipas já carregaram
 
-	onMount(() => {
+	// Função para mostrar notificações
+	function showNotificationWithMessage(message) {
+		notificationMessage = message;
+		showNotification = true;
 		setTimeout(() => {
-			document.body.classList.remove('not-loaded');
+			showNotification = false;
+		}, 3000);
+	}
 
-			// Simula a duração da animação das tulipas (3 segundos)
-			setTimeout(() => {
-				tulipsLoaded = true;
-				const container = document.getElementById('containerTextos');
-				container.style.opacity = 1;
-
-				// Carrega os cards com 1 segundo de atraso entre cada um
-				const cards = document.querySelectorAll('.capitulo');
-				cards.forEach((card, index) => {
-					setTimeout(() => {
-						card.classList.add('animate');
-					}, index * 1000);
-				});
-			}, 5000); // 3 segundos para a animação das tulipas
-		}, 1000);
-	});
-
-	onMount(async () => {
-		if (typeof window !== 'undefined') {
-			userId = localStorage.getItem('user_id') || uuidv4();
-
-			if (!localStorage.getItem('user_id')) {
-				localStorage.setItem('user_id', userId);
-			}
-
-			const response = await fetch('/textos.json');
-			capitulos = await response.json();
-
-			const ipResponse = await fetch('https://api.ipify.org?format=json');
-			const ipData = await ipResponse.json();
-			userIp = ipData.ip.replace(/\./g, '-');
-
-			capitulos = await Promise.all(
-				capitulos.map(async (capitulo) => {
-					const likesRef = ref(db, 'likes/' + capitulo.id);
-					const snapshot = await new Promise((resolve, reject) => {
-						onValue(likesRef, resolve, { onlyOnce: true });
-					});
-					return { ...capitulo, likes: snapshot.val() || 0 };
-				})
-			);
-		}
-	});
-
-	/**
-	 * @param {string} capituloId
-	 */
+	// Função para lidar com "curtir"
 	async function handleLike(capituloId) {
-		if (typeof window !== 'undefined') {
+		try {
 			const userLikeRef = ref(db, `user_likes/${capituloId}/${userId}`);
 			const ipLikeRef = ref(db, `ip_likes/${capituloId}/${userIp}`);
 
@@ -95,33 +51,75 @@
 					capitulo.id === capituloId ? { ...capitulo, likes: capitulo.likes + 1 } : capitulo
 				);
 			});
+		} catch (error) {
+			console.error('Erro ao curtir o capítulo:', error);
 		}
 	}
 
-	/**
-	 * @param {string} text
-	 */
+	// Função para copiar o texto
 	function handleCopy(text) {
-		navigator.clipboard
-			.writeText(text)
+		navigator.clipboard.writeText(text)
 			.then(() => {
 				showNotificationWithMessage('Texto copiado!');
 			})
 			.catch((err) => {
-				console.error('Erro ao copiar texto: ', err);
+				console.error('Erro ao copiar texto:', err);
 			});
 	}
 
-	/**
-	 * @param {string} message
-	 */
-	function showNotificationWithMessage(message) {
-		notificationMessage = message;
-		showNotification = true;
+	// Primeiro onMount para controlar o carregamento das tulipas e animação dos cards
+	onMount(() => {
 		setTimeout(() => {
-			showNotification = false;
-		}, 3000);
-	}
+			document.body.classList.remove('not-loaded');
+
+			// Simula a duração da animação das tulipas (3 segundos)
+			setTimeout(() => {
+				tulipsLoaded = true;
+				const container = document.getElementById('containerTextos');
+				container.style.opacity = 1;
+
+				// Carrega os cards com 1 segundo de atraso entre cada um
+				const cards = document.querySelectorAll('.capitulo');
+				cards.forEach((card, index) => {
+					setTimeout(() => {
+						card.classList.add('animate');
+					}, index * 1000);
+				});
+			}, 3000);
+		}, 1000);
+	});
+
+	// Segundo onMount para carregar dados e inicializar Firebase
+	onMount(async () => {
+		if (typeof window !== 'undefined') {
+			userId = localStorage.getItem('user_id') || uuidv4();
+
+			if (!localStorage.getItem('user_id')) {
+				localStorage.setItem('user_id', userId);
+			}
+
+			try {
+				const response = await fetch('/textos.json');
+				capitulos = await response.json();
+
+				const ipResponse = await fetch('https://api.ipify.org?format=json');
+				const ipData = await ipResponse.json();
+				userIp = ipData.ip.replace(/\./g, '-');
+
+				capitulos = await Promise.all(
+					capitulos.map(async (capitulo) => {
+						const likesRef = ref(db, 'likes/' + capitulo.id);
+						const snapshot = await new Promise((resolve, reject) => {
+							onValue(likesRef, resolve, { onlyOnce: true });
+						});
+						return { ...capitulo, likes: snapshot.val() || 0 };
+					})
+				);
+			} catch (error) {
+				console.error('Erro ao carregar dados:', error);
+			}
+		}
+	});
 </script>
 
 <div class="night"></div>
