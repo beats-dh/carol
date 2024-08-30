@@ -78,6 +78,12 @@
 				const container = document.getElementById('containerTextos');
 				container.style.opacity = 1;
 
+				const nomeCentralizado = document.querySelector('.nome-centralizado');
+				nomeCentralizado.style.display = 'block'; // Torna o elemento visível
+				setTimeout(() => {
+					nomeCentralizado.style.opacity = 1; // Faz a transição de opacidade
+				}, 10);
+
 				// Carrega os cards com 1 segundo de atraso entre cada um
 				const cards = document.querySelectorAll('.capitulo');
 				cards.forEach((card, index) => {
