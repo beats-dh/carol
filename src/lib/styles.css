@@ -251,3 +251,11 @@ body::-webkit-scrollbar-thumb:hover {
         /* Ajuste para melhor utilização do espaço em smartphones */
     }
 }
+
+.visit-counter {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+    color: #9b9292;
+  }
+  

@@ -12,6 +12,7 @@
 	let showNotification = false;
 	let notificationMessage = '';
 	let tulipsLoaded = false; // Variável para controlar se as tulipas já carregaram
+	let visitCount = 0; // Contador de visitas
 
 	// Função para mostrar notificações
 	function showNotificationWithMessage(message) {
@@ -65,6 +66,18 @@
 			.catch((err) => {
 				console.error('Erro ao copiar texto:', err);
 			});
+	}
+
+	// Função para incrementar o contador de visitas
+	async function incrementVisitCount() {
+		try {
+			const visitsRef = ref(db, 'visits');
+			await runTransaction(visitsRef, (currentCount) => {
+				return (currentCount || 0) + 1;
+			});
+		} catch (error) {
+			console.error('Erro ao incrementar o contador de visitas:', error);
+		}
 	}
 
 	// Primeiro onMount para controlar o carregamento das tulipas e animação dos cards
@@ -121,6 +134,15 @@
 						return { ...capitulo, likes: snapshot.val() || 0 };
 					})
 				);
+
+				// Incrementa o contador de visitas ao carregar a página
+				incrementVisitCount();
+
+				// Carrega o contador de visitas atual
+				const visitsRef = ref(db, 'visits');
+				onValue(visitsRef, (snapshot) => {
+					visitCount = snapshot.val() || 0;
+				});
 			} catch (error) {
 				console.error('Erro ao carregar dados:', error);
 			}
@@ -440,6 +462,11 @@
 				</div>
 			</div>
 		{/each}
+	</div>
+
+	<!-- Mostra o contador de visitas -->
+	<div class="visit-counter">
+		<p>Total de Visitas: {visitCount}</p>
 	</div>
 </div>
 
